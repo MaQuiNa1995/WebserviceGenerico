@@ -24,8 +24,12 @@ import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author Christian Muñoz Ason
@@ -50,10 +54,26 @@ public class Configuracion {
         dataSourceBuilder.url("jdbc:sqlite:LibroVisitas.sqlite");
         return dataSourceBuilder.build();
     }
-    
-    @Bean(name= "repository")
-    public SqliteRepository sqliteRepository(){
+
+    @Bean(name = "repository")
+    public SqliteRepository sqliteRepository() {
         return new SqliteRepositoryImpl();
     }
-    
+
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer() {
+
+        return new EmbeddedServletContainerCustomizer() {
+            @Override
+            public void customize(ConfigurableEmbeddedServletContainer container) {
+
+                ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/404.html"); // 401
+                ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html"); // 404
+                ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/404.html"); // 500
+
+                container.addErrorPages(error401Page, error404Page, error500Page);
+            }
+        };
+    }
+
 }
