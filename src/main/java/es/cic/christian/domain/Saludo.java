@@ -21,19 +21,15 @@ package es.cic.christian.domain;
  */
 public class Saludo {
 
-    private final long id;
     private final String mensaje;
 
-    public Saludo(long id, String mensaje) {
-        this.id = id;
+    public Saludo(String mensaje) {
         this.mensaje = mensaje;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getMensaje() {
         return mensaje;
     }
+    
+    
 }

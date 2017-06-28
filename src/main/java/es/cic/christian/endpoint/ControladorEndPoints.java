@@ -40,10 +40,6 @@ public class ControladorEndPoints {
      * Mensaje que se mostrará al entrar a la web
      */
     private static final String MENSAJE = "Hola, %s! c(^_^c)";
-    /**
-     * Contador usado para llevar el registro de usuarios
-     */
-    private final AtomicLong contador = new AtomicLong();
 
 //    /**
 //     * Repositorio que se encarga dela gestión de la base de datos
@@ -60,11 +56,13 @@ public class ControladorEndPoints {
      */
     @RequestMapping("/saludos")
     public Saludo saludarUsuario(@RequestParam(value = "nombre", defaultValue = "Mundo") String nombre) {
+        
         LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
 
         repo.crearBaseDatos();
         repo.registrarVisita(nombre);
-        return new Saludo(contador.incrementAndGet(), String.format(MENSAJE, nombre));
+        
+        return new Saludo(String.format(MENSAJE, nombre));
     }
 
     /**

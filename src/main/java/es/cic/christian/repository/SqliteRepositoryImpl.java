@@ -36,7 +36,7 @@ public class SqliteRepositoryImpl implements SqliteRepository {
 
     private static final Logger LOG = Logger.getLogger(SqliteRepositoryImpl.class.getName());
 
-    private static final String RUTA_BBDD = "jdbc:sqlite:LibroVisitas.sqlite";
+    private static final String RUTA_BBDD = "LibroVisitas.sqlite";
 
     @Override
     public void registrarVisita(String nombre) {
@@ -121,7 +121,11 @@ public class SqliteRepositoryImpl implements SqliteRepository {
      */
     @Override
     public void crearBaseDatos() {
-        if (!existeBaseDatos()) {
+        LOG.info("Comprobamos si existe la base de datos");
+        
+        boolean existe = existeBaseDatos();
+        
+        if (existe == false) {
             crearTablaConsultas();
         }
     }
@@ -163,6 +167,11 @@ public class SqliteRepositoryImpl implements SqliteRepository {
         }
         
         return registroUsuarios;
+        
+    }
+    
+    
+    private void asd(){
         
     }
 
