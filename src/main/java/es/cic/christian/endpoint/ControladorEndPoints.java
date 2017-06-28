@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 the original author or authors.
  *
@@ -13,10 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.cic.christian.wsejemplo;
+package es.cic.christian.endpoint;
 
+import es.cic.christian.domain.Saludo;
+import es.cic.christian.repository.SqliteRepository;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +45,12 @@ public class ControladorEndPoints {
      */
     private final AtomicLong contador = new AtomicLong();
 
+//    /**
+//     * Repositorio que se encarga dela gestión de la base de datos
+//     */
+    @Autowired
+    private SqliteRepository repo;
+
     /**
      * Creación de un Endpoint que te saluda si le pasas un parámetros sino
      * saluda al mundo
@@ -48,9 +59,26 @@ public class ControladorEndPoints {
      * @return
      */
     @RequestMapping("/saludos")
-    public Saludo greeting(@RequestParam(value = "nombre", defaultValue = "Mundo") String nombre) {
-        LOG.info("Han accedido a la web, vamos a saludar a ".concat(nombre));
-        return new Saludo(contador.incrementAndGet(),
-                String.format(MENSAJE, nombre));
+    public Saludo saludarUsuario(@RequestParam(value = "nombre", defaultValue = "Mundo") String nombre) {
+        LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
+
+        repo.crearBaseDatos();
+        repo.registrarVisita(nombre);
+        return new Saludo(contador.incrementAndGet(), String.format(MENSAJE, nombre));
+    }
+
+    /**
+     * Creación de un Endpoint que devuelve la lista de usuarios registrados
+     *
+     * @return Mapa que contiene todos los usuarios registrados
+     */
+    @RequestMapping("/registro")
+    public Map<String, String> verRegistro() {
+        LOG.info("Vamos a ver los usuarios que han entrado al enlace");
+
+        repo.crearBaseDatos();
+        Map<String, String> registroUsuarios = repo.obtenerRegistroUsuarios();
+
+        return registroUsuarios;
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.cic.christian.wsejemplo;
+package es.cic.christian.domain;
 
 /**
  * Clase que contendrá los datos que mostraremos cuando accedan al webService

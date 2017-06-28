@@ -13,24 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.cic.christian.wsejemplo;
+package es.cic.christian;
 
-import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 
 /**
- * Clase main que inicia la aplicaciÃ³n
+ * Clase main que inicia la aplicación
  *
  * @author cmunoz
  */
+
 @SpringBootApplication
 public class Main {
 
     /**
      * Método que inicia la aplicación
      *
-     * @param args Array de parÃ¡metros que se le pueden pasar al método
+     * @param args Array de parámetros que se le pueden pasar al método
      */
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
