@@ -36,7 +36,7 @@ import es.maquina.webservice.service.RegistroService;
  */
 @RestController
 @Controller("registroController")
-public class RegistroControllerImpl {
+public class RegistroControllerImpl implements RegistroController {
 
 	private static final Logger LOG = Logger.getLogger(RegistroControllerImpl.class.getName());
 
@@ -48,12 +48,8 @@ public class RegistroControllerImpl {
 	@Resource(name = "registroService")
 	private RegistroService registroService;
 
-	/**
-	 * Creación de un Endpoint que te saluda si le pasas un parámetros sino saluda
-	 * al mundo
-	 *
-	 * @param String nombre que contiene el nombre de un usuario para saludarle
-	 * @return
+	/* (non-Javadoc)
+	 * @see es.maquina.webservice.controller.RegistroController#saludarUsuario(java.lang.String)
 	 */
 	@RequestMapping("/saludar")
 	public Respuesta saludarUsuario(@RequestParam(value = "nombre") String nombre) {
@@ -65,10 +61,8 @@ public class RegistroControllerImpl {
 		return new Respuesta(String.format(MENSAJE, nombre));
 	}
 
-	/**
-	 * Creación de un Endpoint que devuelve la lista de usuarios registrados
-	 *
-	 * @return Mapa que contiene todos los usuarios registrados
+	/* (non-Javadoc)
+	 * @see es.maquina.webservice.controller.RegistroController#verRegistro()
 	 */
 	@RequestMapping("/verRegistrados")
 	public List<String> verRegistro() {
