@@ -17,6 +17,7 @@ package es.maquina.webservice.main;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Clase main que inicia la aplicación
@@ -24,6 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author MaQuina1995
  */
 @SpringBootApplication
+@ComponentScan("es.maquina.webservice")
 public class Main {
 
 	/**
