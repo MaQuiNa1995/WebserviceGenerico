@@ -19,13 +19,11 @@ package es.maquina.webservice.controller;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.maquina.webservice.dominio.Saludo;
-import es.maquina.webservice.repository.SqliteRepository;
 
 /**
  * Creador de los EndPoints
@@ -43,12 +41,6 @@ public class ControladorEndPoints {
 	private static final String MENSAJE = "Hola, %s! c(^_^c)";
 
 	/**
-	 * Repositorio que se encarga dela gestión de la base de datos
-	 */
-	@Autowired
-	private SqliteRepository repo;
-
-	/**
 	 * Creación de un Endpoint que te saluda si le pasas un parámetros sino saluda
 	 * al mundo
 	 *
@@ -60,8 +52,7 @@ public class ControladorEndPoints {
 
 		LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
 
-		repo.crearBaseDatos();
-		repo.registrarVisita(nombre);
+		repository.registrarVisita(nombre);
 
 		return new Saludo(String.format(MENSAJE, nombre));
 	}
@@ -75,9 +66,13 @@ public class ControladorEndPoints {
 	public Map<String, String> verRegistro() {
 		LOG.info("Vamos a ver los usuarios que han entrado al enlace");
 
-		repo.crearBaseDatos();
-		Map<String, String> registroUsuarios = repo.obtenerRegistroUsuarios();
+		Map<String, String> registroUsuarios = repository.obtenerRegistroUsuarios();
 
 		return registroUsuarios;
+	}
+
+	@RequestMapping("/")
+	public String welcome() {
+		return "Welcome to Spring Boot Tutorials";
 	}
 }

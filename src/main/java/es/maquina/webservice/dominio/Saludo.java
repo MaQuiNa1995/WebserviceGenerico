@@ -22,7 +22,7 @@ package es.maquina.webservice.dominio;
  */
 public class Saludo {
 
-	private final String mensaje;
+	private String mensaje;
 
 	public Saludo(String mensaje) {
 		this.mensaje = mensaje;
