@@ -17,7 +17,7 @@ import es.maquina.webservice.repository.RegistroRepositoryImpl;
 public class Registro {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "FECHA")
 	private String fecha;
