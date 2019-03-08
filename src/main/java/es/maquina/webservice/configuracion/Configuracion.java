@@ -42,7 +42,8 @@ public class Configuracion {
 	private static final String PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH = "hibernate.max_fetch_depth";
 	private static final String PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE = "hibernate.jdbc.fetch_size";
 	private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
-	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.cic.curso.curso18.mascotastarcraft.dominio";
+	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.maquina.webservice.persistencia.dominio";
+	private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
 
 	@Bean
 	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> customContainer() {
@@ -108,7 +109,7 @@ public class Configuracion {
 		properties.put(PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH, 10);
 		properties.put(PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE, 2);
 		properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, true);
-		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, "org.hibernate.dialect.MySQLDialect");
 		return properties;
 	}
 
