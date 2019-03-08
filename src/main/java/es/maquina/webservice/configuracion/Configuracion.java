@@ -13,67 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.cic.christian.configuracion;
+package es.maquina.webservice.configuracion;
 
-import es.cic.christian.repository.SqliteRepository;
-import es.cic.christian.repository.SqliteRepositoryImpl;
 import java.util.logging.Logger;
+
 import javax.sql.DataSource;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.web.servlet.ErrorPage;
+
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 
 /**
- * @author Christian Muñoz Ason
- * @version 0.1.0
- * @since 1.8
+ * Clase de configuracion de beans (contexto de spring) a traves de Beans
+ * 
+ * @author MaQuiNa1995
  */
 @Configuration
-@EnableAutoConfiguration(exclude = {
-    BatchAutoConfiguration.class,
-    WebMvcAutoConfiguration.class,
-    DataSourceAutoConfiguration.class
-})
 public class Configuracion {
 
-    private static final Logger LOG = Logger.getLogger(Configuracion.class.getName());
+	private static final Logger LOG = Logger.getLogger(Configuracion.class.getName());
 
-    @Bean(name = "dataSource")
-    public DataSource dataSource() {
-        LOG.info("Creando DataSource");
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
-        dataSourceBuilder.url("jdbc:sqlite:LibroVisitas.sqlite");
-        return dataSourceBuilder.build();
-    }
+	@Bean(name = "dataSource")
+	public DataSource dataSource() {
+		LOG.info("Creando DataSource");
+		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+		dataSourceBuilder.driverClassName("org.sqlite.JDBC");
+		dataSourceBuilder.url("jdbc:sqlite:LibroVisitas.sqlite");
+		return dataSourceBuilder.build();
+	}
 
-    @Bean(name = "repository")
-    public SqliteRepository sqliteRepository() {
-        return new SqliteRepositoryImpl();
-    }
+	@Bean
+	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> containerCustomizer() {
 
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
+		return new WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>() {
 
-        return new EmbeddedServletContainerCustomizer() {
-            @Override
-            public void customize(ConfigurableEmbeddedServletContainer container) {
+			@Override
+			public void customize(ConfigurableServletWebServerFactory factory) {
+				ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/404.html"); // 401
+				ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html"); // 404
+				ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/404.html"); // 500
 
-                ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/404.html"); // 401
-                ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html"); // 404
-                ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/404.html"); // 500
+				factory.addErrorPages(error401Page, error404Page, error500Page);
 
-                container.addErrorPages(error401Page, error404Page, error500Page);
-            }
-        };
-    }
+			}
+		};
+	}
 
 }
