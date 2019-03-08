@@ -12,13 +12,14 @@ import es.maquina.webservice.persistencia.dominio.Registro;
 public class RegistroRepositoryImpl extends GenericRepositoryImpl<Registro> implements RegistroRepository {
 
 	public static final String NOMBRE_TABLA = "REGISTRO";
+	public static final String FIND_ALL_QUERY = "Registro.findAll";
 
 	@Override
 	public List<String> findAll() {
 
-		TypedQuery<String> listaRegistrados = entityManager.createQuery("FROM ".concat(NOMBRE_TABLA), String.class);
+		TypedQuery<String> listadoRegistrados = entityManager.createNamedQuery(FIND_ALL_QUERY, String.class);
 
-		return listaRegistrados.getResultList();
+		return listadoRegistrados.getResultList();
 	}
 
 	@Override
