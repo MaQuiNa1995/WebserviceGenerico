@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.cic.christian.domain;
+package es.maquina.webservice.dominio;
 
 /**
  * Clase que contendrá los datos que mostraremos cuando accedan al webService
- * @author cmunoz
+ * 
+ * @author MaQuiNa1995
  */
-public class Saludo {
+public class Respuesta {
 
-    private final String mensaje;
+	private String mensaje;
 
-    public Saludo(String mensaje) {
-        this.mensaje = mensaje;
-    }
+	public Respuesta(String mensaje) {
+		this.mensaje = mensaje;
+	}
 
-    public String getMensaje() {
-        return mensaje;
-    }
-    
-    
+	public String getMensaje() {
+		return mensaje;
+	}
+
 }
