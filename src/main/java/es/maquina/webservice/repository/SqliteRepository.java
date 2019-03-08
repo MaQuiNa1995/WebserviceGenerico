@@ -1,21 +1,19 @@
-package es.cic.christian.repository;
+package es.maquina.webservice.repository;
 
 import java.util.Map;
 
 /**
- * @author      Christian Muñoz Ason
- * @version     0.1.0
- * @since       1.8
+ * @author MaQuiNa1995
  */
 public interface SqliteRepository {
 
-    void registrarVisita(String nombre);
+	void registrarVisita(String nombre);
 
-    /**
-     * Método encargado de la creación de la base de datos
-     */
-    void crearBaseDatos();
+	/**
+	 * Método encargado de la creación de la base de datos
+	 */
+	void crearBaseDatos();
 
-    Map<String, String> obtenerRegistroUsuarios();
-    
+	Map<String, String> obtenerRegistroUsuarios();
+
 }

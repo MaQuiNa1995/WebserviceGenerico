@@ -14,69 +14,70 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.cic.christian.endpoint;
+package es.maquina.webservice.controller;
 
-import es.cic.christian.domain.Saludo;
-import es.cic.christian.repository.SqliteRepository;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.maquina.webservice.dominio.Saludo;
+import es.maquina.webservice.repository.SqliteRepository;
+
 /**
  * Creador de los EndPoints
  *
- * @author cmunoz
+ * @author MaQuina1995
  */
 @RestController
 public class ControladorEndPoints {
 
-    private static final Logger LOG = Logger.getLogger(ControladorEndPoints.class.getName());
+	private static final Logger LOG = Logger.getLogger(ControladorEndPoints.class.getName());
 
-    /**
-     * Mensaje que se mostrará al entrar a la web
-     */
-    private static final String MENSAJE = "Hola, %s! c(^_^c)";
+	/**
+	 * Mensaje que se mostrará al entrar a la web
+	 */
+	private static final String MENSAJE = "Hola, %s! c(^_^c)";
 
-//    /**
-//     * Repositorio que se encarga dela gestión de la base de datos
-//     */
-    @Autowired
-    private SqliteRepository repo;
+	/**
+	 * Repositorio que se encarga dela gestión de la base de datos
+	 */
+	@Autowired
+	private SqliteRepository repo;
 
-    /**
-     * Creación de un Endpoint que te saluda si le pasas un parámetros sino
-     * saluda al mundo
-     *
-     * @param nombre String que contiene el nombre de un usuario para saludarle
-     * @return
-     */
-    @RequestMapping("/saludos")
-    public Saludo saludarUsuario(@RequestParam(value = "nombre", defaultValue = "Mundo") String nombre) {
-        
-        LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
+	/**
+	 * Creación de un Endpoint que te saluda si le pasas un parámetros sino saluda
+	 * al mundo
+	 *
+	 * @param nombre String que contiene el nombre de un usuario para saludarle
+	 * @return
+	 */
+	@RequestMapping("/saludos")
+	public Saludo saludarUsuario(@RequestParam(value = "nombre", defaultValue = "Mundo") String nombre) {
 
-        repo.crearBaseDatos();
-        repo.registrarVisita(nombre);
-        
-        return new Saludo(String.format(MENSAJE, nombre));
-    }
+		LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
 
-    /**
-     * Creación de un Endpoint que devuelve la lista de usuarios registrados
-     *
-     * @return Mapa que contiene todos los usuarios registrados
-     */
-    @RequestMapping("/registro")
-    public Map<String, String> verRegistro() {
-        LOG.info("Vamos a ver los usuarios que han entrado al enlace");
+		repo.crearBaseDatos();
+		repo.registrarVisita(nombre);
 
-        repo.crearBaseDatos();
-        Map<String, String> registroUsuarios = repo.obtenerRegistroUsuarios();
+		return new Saludo(String.format(MENSAJE, nombre));
+	}
 
-        return registroUsuarios;
-    }
+	/**
+	 * Creación de un Endpoint que devuelve la lista de usuarios registrados
+	 *
+	 * @return Mapa que contiene todos los usuarios registrados
+	 */
+	@RequestMapping("/registro")
+	public Map<String, String> verRegistro() {
+		LOG.info("Vamos a ver los usuarios que han entrado al enlace");
+
+		repo.crearBaseDatos();
+		Map<String, String> registroUsuarios = repo.obtenerRegistroUsuarios();
+
+		return registroUsuarios;
+	}
 }
