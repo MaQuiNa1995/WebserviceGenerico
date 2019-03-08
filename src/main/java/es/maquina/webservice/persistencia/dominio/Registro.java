@@ -7,15 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import es.maquina.webservice.repository.RegistroRepositoryImpl;
+
 /**
  * 
  */
 @Entity
-@Table(name = "REGISTRO")
+@Table(name = RegistroRepositoryImpl.NOMBRE_TABLA)
 public class Registro {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private Long id;
 	@Column(name = "FECHA")
 	private String fecha;
