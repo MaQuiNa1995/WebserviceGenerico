@@ -43,7 +43,7 @@ public class Configuracion {
 	private static final String PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE = "hibernate.jdbc.fetch_size";
 	private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.maquina.webservice.persistencia.dominio";
-	private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
+	private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "org.hibernate.dialect.HSQLDialect";
 
 	@Bean
 	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> customContainer() {
@@ -72,7 +72,7 @@ public class Configuracion {
 		dataSource.setInitialSize(5);
 		dataSource.setMaxIdle(10);
 		dataSource.setPoolPreparedStatements(Boolean.TRUE);
-		dataSource.setMaxOpenPreparedStatements(3);
+		dataSource.setMaxOpenPreparedStatements(5);
 		return dataSource;
 
 	}
@@ -99,7 +99,7 @@ public class Configuracion {
 
 	private HibernateJpaVendorAdapter vendorAdaptor() {
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setShowSql(true);
+		vendorAdapter.setShowSql(Boolean.TRUE);
 		return vendorAdapter;
 	}
 
@@ -108,8 +108,9 @@ public class Configuracion {
 		Properties properties = new Properties();
 		properties.put(PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH, 10);
 		properties.put(PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE, 2);
-		properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, true);
+		properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, Boolean.TRUE);
 		properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, "org.hibernate.dialect.MySQLDialect");
+		properties.put("hibernate.hbm2ddl.auto", "create-drop");
 		return properties;
 	}
 
