@@ -20,11 +20,11 @@ package es.maquina.webservice.dominio;
  * 
  * @author MaQuiNa1995
  */
-public class Saludo {
+public class Respuesta {
 
 	private String mensaje;
 
-	public Saludo(String mensaje) {
+	public Respuesta(String mensaje) {
 		this.mensaje = mensaje;
 	}
 

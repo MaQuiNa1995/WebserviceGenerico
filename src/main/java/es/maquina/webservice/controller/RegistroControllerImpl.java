@@ -16,14 +16,18 @@
  */
 package es.maquina.webservice.controller;
 
-import java.util.Map;
+import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.maquina.webservice.dominio.Saludo;
+import es.maquina.webservice.dominio.Respuesta;
+import es.maquina.webservice.service.RegistroService;
 
 /**
  * Creador de los EndPoints
@@ -31,30 +35,34 @@ import es.maquina.webservice.dominio.Saludo;
  * @author MaQuina1995
  */
 @RestController
-public class ControladorEndPoints {
+@Controller("registroController")
+public class RegistroControllerImpl {
 
-	private static final Logger LOG = Logger.getLogger(ControladorEndPoints.class.getName());
+	private static final Logger LOG = Logger.getLogger(RegistroControllerImpl.class.getName());
 
 	/**
 	 * Mensaje que se mostrará al entrar a la web
 	 */
 	private static final String MENSAJE = "Hola, %s! c(^_^c)";
 
+	@Resource(name = "registroService")
+	private RegistroService registroService;
+
 	/**
 	 * Creación de un Endpoint que te saluda si le pasas un parámetros sino saluda
 	 * al mundo
 	 *
-	 * @param nombre String que contiene el nombre de un usuario para saludarle
+	 * @param String nombre que contiene el nombre de un usuario para saludarle
 	 * @return
 	 */
-	@RequestMapping("/saludos")
-	public Saludo saludarUsuario(@RequestParam(value = "nombre", defaultValue = "Mundo") String nombre) {
+	@RequestMapping("/saludar")
+	public Respuesta saludarUsuario(@RequestParam(value = "nombre") String nombre) {
 
 		LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
 
-		repository.registrarVisita(nombre);
+		registroService.registrarVisita(nombre);
 
-		return new Saludo(String.format(MENSAJE, nombre));
+		return new Respuesta(String.format(MENSAJE, nombre));
 	}
 
 	/**
@@ -62,17 +70,12 @@ public class ControladorEndPoints {
 	 *
 	 * @return Mapa que contiene todos los usuarios registrados
 	 */
-	@RequestMapping("/registro")
-	public Map<String, String> verRegistro() {
+	@RequestMapping("/verRegistrados")
+	public List<String> verRegistro() {
 		LOG.info("Vamos a ver los usuarios que han entrado al enlace");
 
-		Map<String, String> registroUsuarios = repository.obtenerRegistroUsuarios();
+		List<String> registroUsuarios = registroService.obtenerRegistrados();
 
 		return registroUsuarios;
-	}
-
-	@RequestMapping("/")
-	public String welcome() {
-		return "Welcome to Spring Boot Tutorials";
 	}
 }

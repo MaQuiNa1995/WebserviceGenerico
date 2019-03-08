@@ -1,4 +1,4 @@
-package es.maquina.webservice.dominio;
+package es.maquina.webservice.persistencia.dominio;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
