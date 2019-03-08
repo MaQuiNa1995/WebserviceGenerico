@@ -29,7 +29,7 @@ import es.maquina.webservice.configuracion.Configuracion;
 /**
  * @author MaQuiNa1995
  */
-@Repository
+@Repository("sqliteRepository")
 public class SqliteRepositoryImpl implements SqliteRepository {
 
 	private static final Logger LOG = Logger.getLogger(SqliteRepositoryImpl.class.getName());
