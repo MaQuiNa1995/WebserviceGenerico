@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import es.maquina.webservice.repository.RegistroRepositoryImpl;
+import es.maquina.webservice.util.TimeUtils;
 
 /**
  * 
@@ -23,6 +26,12 @@ public class Registro {
 	private String fecha;
 	@Column(name = "NOMBRE_USUARIO")
 	private String nombreUsuario;
+
+	@PrePersist
+	@PreUpdate
+	private void actualizarFecha() {
+		fecha = TimeUtils.getHoraActual();
+	}
 
 	public Long getId() {
 		return id;

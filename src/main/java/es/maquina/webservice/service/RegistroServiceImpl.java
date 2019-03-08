@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import es.maquina.webservice.persistencia.dominio.Registro;
 import es.maquina.webservice.repository.RegistroRepository;
-import es.maquina.webservice.util.TimeUtils;
 
 @Service("registroService")
 public class RegistroServiceImpl implements RegistroService {
@@ -26,7 +25,6 @@ public class RegistroServiceImpl implements RegistroService {
 	public void registrarVisita(String nombreUsuario) {
 
 		Registro registro = new Registro();
-		registro.setFecha(TimeUtils.getHoraActual());
 		registro.setNombreUsuario(nombreUsuario);
 		registroRepository.persist(registro);
 
