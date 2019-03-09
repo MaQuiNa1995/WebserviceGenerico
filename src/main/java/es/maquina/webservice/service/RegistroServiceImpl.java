@@ -30,6 +30,13 @@ public class RegistroServiceImpl implements RegistroService {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * es.maquina.webservice.service.RegistroService#obtenerRegistrados(java.lang.
+	 * String)
+	 */
 	@Override
 	public List<String> obtenerRegistrados() {
 

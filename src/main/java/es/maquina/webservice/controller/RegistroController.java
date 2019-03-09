@@ -2,19 +2,15 @@ package es.maquina.webservice.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import es.maquina.webservice.dominio.Respuesta;
 
 public interface RegistroController {
 
 	/**
-	 * Creación de un Endpoint que te saluda si le pasas un parámetros sino saluda
-	 * al mundo
+	 * Creación de un Endpoint que te saluda si le pasas un parámetro
 	 *
 	 * @param String nombre que contiene el nombre de un usuario para saludarle
-	 * @return
+	 * @return String que contiene la cadena de saludo
 	 */
 	Respuesta saludarUsuario(String nombre);
 

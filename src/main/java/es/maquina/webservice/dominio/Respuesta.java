@@ -16,7 +16,8 @@
 package es.maquina.webservice.dominio;
 
 /**
- * Clase que contendrá los datos que mostraremos cuando accedan al webService
+ * Clase que contendrá una cadena informativa al usuario que ha llamado al
+ * webservice
  * 
  * @author MaQuiNa1995
  */
@@ -24,7 +25,7 @@ public class Respuesta {
 
 	private String mensaje;
 
-	public Respuesta(String mensaje) {
+	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
 

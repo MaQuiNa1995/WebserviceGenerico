@@ -17,11 +17,13 @@
 package es.maquina.webservice.controller;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,13 +34,13 @@ import es.maquina.webservice.service.RegistroService;
 /**
  * Creador de los EndPoints
  *
- * @author MaQuina1995
+ * @author MaQuiNa1995
  */
 @RestController
 @Controller("registroController")
 public class RegistroControllerImpl implements RegistroController {
 
-	private static final Logger LOG = Logger.getLogger(RegistroControllerImpl.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(RegistroControllerImpl.class);
 
 	/**
 	 * Mensaje que se mostrará al entrar a la web
@@ -48,25 +50,39 @@ public class RegistroControllerImpl implements RegistroController {
 	@Resource(name = "registroService")
 	private RegistroService registroService;
 
-	/* (non-Javadoc)
-	 * @see es.maquina.webservice.controller.RegistroController#saludarUsuario(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * es.maquina.webservice.controller.RegistroController#saludarUsuario(java.lang.
+	 * String)
 	 */
 	@RequestMapping("/saludar")
 	public Respuesta saludarUsuario(@RequestParam(value = "nombre") String nombre) {
 
-		LOG.info("Vamos a registrar a ".concat(nombre).concat(" En BBDD"));
+		LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombre));
 
-		registroService.registrarVisita(nombre);
+		Respuesta respuesta = new Respuesta();
 
-		return new Respuesta(String.format(MENSAJE, nombre));
+		if (StringUtils.hasText(nombre)) {
+
+			registroService.registrarVisita(nombre);
+			respuesta.setMensaje(String.format(MENSAJE, nombre));
+		} else {
+			respuesta.setMensaje("No has escrito ningun parametro...");
+		}
+
+		return respuesta;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see es.maquina.webservice.controller.RegistroController#verRegistro()
 	 */
 	@RequestMapping("/verRegistrados")
 	public List<String> verRegistro() {
-		LOG.info("Vamos a ver los usuarios que han entrado al enlace");
+		LOG.debug("Vamos a ver los usuarios que han entrado al enlace");
 
 		List<String> registroUsuarios = registroService.obtenerRegistrados();
 
