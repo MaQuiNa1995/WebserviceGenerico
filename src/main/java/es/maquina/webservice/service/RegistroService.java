@@ -2,6 +2,8 @@ package es.maquina.webservice.service;
 
 import java.util.List;
 
+import es.maquina.webservice.dominio.Respuesta;
+
 public interface RegistroService {
 
 	/**
@@ -9,8 +11,9 @@ public interface RegistroService {
 	 * como parametro
 	 * 
 	 * @param nombreUsuario String que contiene el nombre del usuario
+	 * @return
 	 */
-	void registrarVisita(String nombreUsuario);
+	Respuesta registrarVisita(String nombreUsuario);
 
 	/**
 	 * Metodo que devuelve la lista de usuarios que hay registrados en la base de

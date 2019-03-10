@@ -5,8 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import es.maquina.webservice.dominio.Respuesta;
 import es.maquina.webservice.persistencia.dominio.Registro;
 import es.maquina.webservice.repository.RegistroRepository;
 
@@ -16,23 +20,37 @@ public class RegistroServiceImpl implements RegistroService {
 	@Resource(name = "registroRepository")
 	private RegistroRepository registroRepository;
 
+	/**
+	 * Mensaje que se mostrará al entrar a la web
+	 */
+	private static final String MENSAJE = "Hola, %s! c(^_^c)";
+
+	private static final Logger LOG = LoggerFactory.getLogger(RegistroServiceImpl.class);
+
 	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * es.maquina.webservice.service.RegistroService#crearRegistro(java.lang.String)
 	 */
-	public void registrarVisita(String nombreUsuario) {
+	public Respuesta registrarVisita(String nombreUsuario) {
 
-		Registro registro = new Registro();
-		registro.setNombreUsuario(nombreUsuario);
-		registroRepository.persist(registro);
+		Respuesta respuesta = new Respuesta();
+
+		if (StringUtils.hasText(nombreUsuario)) {
+			LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombreUsuario));
+			Registro registro = new Registro();
+			registro.setNombreUsuario(nombreUsuario);
+			registroRepository.persist(registro);
+			respuesta.setMensaje(String.format(MENSAJE, nombreUsuario));
+		} else {
+			LOG.warn("No has escrito ningun parametro...");
+			respuesta.setMensaje("No has escrito ningun parametro...");
+		}
+
+		return respuesta;
 
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * es.maquina.webservice.service.RegistroService#obtenerRegistrados(java.lang.
 	 * String)
@@ -40,9 +58,9 @@ public class RegistroServiceImpl implements RegistroService {
 	@Override
 	public List<String> obtenerRegistrados() {
 
-		List<String> lista = Collections.unmodifiableList(registroRepository.findAll());
+		LOG.trace("Vamos a ver los usuarios que han entrado al enlace");
 
-		return lista;
+		return Collections.unmodifiableList(registroRepository.findAll());
 
 	}
 
