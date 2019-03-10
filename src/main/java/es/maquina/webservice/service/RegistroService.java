@@ -11,7 +11,9 @@ public interface RegistroService {
 	 * como parametro
 	 * 
 	 * @param nombreUsuario String que contiene el nombre del usuario
-	 * @return
+	 * @return String que contiene el saludo al usuario en caso de no existiera en
+	 *         la base de datos en caso contrario nos avisarña de que esa visita ya
+	 *         estaba registrada
 	 */
 	Respuesta registrarVisita(String nombreUsuario);
 

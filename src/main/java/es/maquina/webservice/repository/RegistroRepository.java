@@ -8,4 +8,6 @@ public interface RegistroRepository extends GenericRepository<Registro> {
 
 	List<String> findAll();
 
+	String findByUsuario(String nombreUsuario);
+
 }

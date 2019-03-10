@@ -9,6 +9,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import es.maquina.webservice.repository.RegistroRepositoryImpl;
@@ -19,7 +20,10 @@ import es.maquina.webservice.util.TimeUtils;
  */
 @Entity
 @Table(name = RegistroRepositoryImpl.NOMBRE_TABLA)
-@NamedQuery(name = RegistroRepositoryImpl.FIND_ALL_QUERY, query = "select reg.nombreUsuario from Registro reg")
+@NamedQueries({
+		@NamedQuery(name = RegistroRepositoryImpl.FIND_ALL_QUERY, query = "select reg.nombreUsuario from Registro reg", comment = "Query para leer todos los nombres de los usuarios registrados"),
+		@NamedQuery(name = RegistroRepositoryImpl.EXISTE_USUARIO, query = "select reg.nombreUsuario from Registro reg where reg.nombreUsuario=:nombreUsuario", comment = "Query para saber si el nombre ya está registrado") })
+
 public class Registro {
 
 	@Id

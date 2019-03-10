@@ -13,6 +13,7 @@ public class RegistroRepositoryImpl extends GenericRepositoryImpl<Registro> impl
 
 	public static final String NOMBRE_TABLA = "REGISTRO";
 	public static final String FIND_ALL_QUERY = "Registro.findAll";
+	public static final String EXISTE_USUARIO = "Registro.findByNombre";
 
 	@Override
 	public List<String> findAll() {
@@ -25,6 +26,22 @@ public class RegistroRepositoryImpl extends GenericRepositoryImpl<Registro> impl
 	@Override
 	public Class<Registro> getClassDeM() {
 		return Registro.class;
+	}
+
+	@Override
+	public String findByUsuario(String nombreUsuario) {
+		TypedQuery<String> listadoRegistrados = entityManager.createNamedQuery(EXISTE_USUARIO, String.class);
+		listadoRegistrados.setParameter("nombreUsuario", nombreUsuario);
+
+		String nombre = "";
+
+		List<String> lista = listadoRegistrados.getResultList();
+
+		if (lista.isEmpty() == Boolean.FALSE) {
+			nombre = lista.get(0);
+		}
+
+		return nombre;
 	}
 
 }

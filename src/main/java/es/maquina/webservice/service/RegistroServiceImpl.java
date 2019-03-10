@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import es.maquina.webservice.dominio.Respuesta;
+import es.maquina.webservice.exception.UsuarioYaRegistradoException;
 import es.maquina.webservice.persistencia.dominio.Registro;
 import es.maquina.webservice.repository.RegistroRepository;
 
@@ -35,19 +36,32 @@ public class RegistroServiceImpl implements RegistroService {
 
 		Respuesta respuesta = new Respuesta();
 
-		if (StringUtils.hasText(nombreUsuario)) {
-			LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombreUsuario));
-			Registro registro = new Registro();
-			registro.setNombreUsuario(nombreUsuario);
-			registroRepository.persist(registro);
-			respuesta.setMensaje(String.format(MENSAJE, nombreUsuario));
-		} else {
-			LOG.warn("No has escrito ningun parametro...");
-			respuesta.setMensaje("No has escrito ningun parametro...");
+		try {
+			existeUsuario(nombreUsuario);
+			if (StringUtils.hasText(nombreUsuario)) {
+				LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombreUsuario));
+				Registro registro = new Registro();
+				registro.setNombreUsuario(nombreUsuario);
+				registroRepository.persist(registro);
+				respuesta.setMensaje(String.format(MENSAJE, nombreUsuario));
+			} else {
+				LOG.warn("No has escrito ningun parametro...");
+				respuesta.setMensaje("No has escrito ningun parametro...");
+			}
+		} catch (UsuarioYaRegistradoException exception) {
+			LOG.error(exception.getLocalizedMessage());
+			respuesta.setMensaje(exception.getLocalizedMessage());
 		}
 
 		return respuesta;
 
+	}
+
+	private void existeUsuario(String nombreUsuario) throws UsuarioYaRegistradoException {
+
+		if (registroRepository.findByUsuario(nombreUsuario).isEmpty() == Boolean.FALSE) {
+			throw new UsuarioYaRegistradoException(nombreUsuario);
+		}
 	}
 
 	/*
