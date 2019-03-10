@@ -15,8 +15,6 @@
  */
 package es.maquina.webservice.configuracion;
 
-import java.util.Properties;
-
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -29,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import springfox.documentation.builders.PathSelectors;
@@ -46,12 +45,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Configuracion {
 
-	private static final String PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH = "hibernate.max_fetch_depth";
-	private static final String PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE = "hibernate.jdbc.fetch_size";
-	private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.maquina.webservice.persistencia.dominio";
-	private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "org.hibernate.dialect.HSQLDialect";
-	private static final String PROPERTY_NAME_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
 
 	@Bean
 	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> customContainer() {
@@ -98,9 +92,9 @@ public class Configuracion {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setJpaVendorAdapter(vendorAdaptor());
 		entityManagerFactoryBean.setDataSource(dataSource());
+		entityManagerFactoryBean.setPersistenceUnitName("MaQuiNaPersistenceUnit");
 		entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 		entityManagerFactoryBean.setPackagesToScan(ENTITYMANAGER_PACKAGES_TO_SCAN);
-		entityManagerFactoryBean.setJpaProperties(jpaHibernateProperties());
 
 		return entityManagerFactoryBean;
 	}
@@ -108,18 +102,9 @@ public class Configuracion {
 	private HibernateJpaVendorAdapter vendorAdaptor() {
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		vendorAdapter.setShowSql(Boolean.TRUE);
+		vendorAdapter.setGenerateDdl(Boolean.TRUE);
+		vendorAdapter.setDatabase(Database.HSQL);
 		return vendorAdapter;
-	}
-
-	private Properties jpaHibernateProperties() {
-
-		Properties properties = new Properties();
-		properties.put(PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH, 10);
-		properties.put(PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE, 2);
-		properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, Boolean.TRUE);
-		properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, "org.hibernate.dialect.MySQLDialect");
-		properties.put(PROPERTY_NAME_HBM2DDL_AUTO, "create-drop");
-		return properties;
 	}
 
 	@Bean

@@ -5,10 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NamedQuery;
 
 import es.maquina.webservice.repository.RegistroRepositoryImpl;
 import es.maquina.webservice.util.TimeUtils;
@@ -17,8 +18,8 @@ import es.maquina.webservice.util.TimeUtils;
  * 
  */
 @Entity
-@NamedQuery(name = RegistroRepositoryImpl.FIND_ALL_QUERY, query = "select reg.nombreUsuario from Registro reg")
 @Table(name = RegistroRepositoryImpl.NOMBRE_TABLA)
+@NamedQuery(name = RegistroRepositoryImpl.FIND_ALL_QUERY, query = "select reg.nombreUsuario from Registro reg")
 public class Registro {
 
 	@Id
