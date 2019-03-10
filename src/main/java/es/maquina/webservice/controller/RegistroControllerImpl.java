@@ -20,11 +20,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,13 +38,6 @@ import es.maquina.webservice.service.RegistroService;
 @Controller("registroController")
 public class RegistroControllerImpl implements RegistroController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RegistroControllerImpl.class);
-
-	/**
-	 * Mensaje que se mostrará al entrar a la web
-	 */
-	private static final String MENSAJE = "Hola, %s! c(^_^c)";
-
 	@Resource(name = "registroService")
 	private RegistroService registroService;
 
@@ -57,22 +48,10 @@ public class RegistroControllerImpl implements RegistroController {
 	 * es.maquina.webservice.controller.RegistroController#saludarUsuario(java.lang.
 	 * String)
 	 */
-	@RequestMapping("/saludar")
+	@RequestMapping(value = "/saludar", method = { RequestMethod.POST })
 	public Respuesta saludarUsuario(@RequestParam(value = "nombre") String nombre) {
 
-		LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombre));
-
-		Respuesta respuesta = new Respuesta();
-
-		if (StringUtils.hasText(nombre)) {
-
-			registroService.registrarVisita(nombre);
-			respuesta.setMensaje(String.format(MENSAJE, nombre));
-		} else {
-			respuesta.setMensaje("No has escrito ningun parametro...");
-		}
-
-		return respuesta;
+		return registroService.registrarVisita(nombre);
 	}
 
 	/*
@@ -80,12 +59,9 @@ public class RegistroControllerImpl implements RegistroController {
 	 * 
 	 * @see es.maquina.webservice.controller.RegistroController#verRegistro()
 	 */
-	@RequestMapping("/verRegistrados")
+	@RequestMapping(value = "/verRegistrados", method = RequestMethod.GET)
 	public List<String> verRegistro() {
-		LOG.debug("Vamos a ver los usuarios que han entrado al enlace");
 
-		List<String> registroUsuarios = registroService.obtenerRegistrados();
-
-		return registroUsuarios;
+		return registroService.obtenerRegistrados();
 	}
 }
