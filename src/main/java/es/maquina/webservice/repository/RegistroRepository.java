@@ -6,8 +6,8 @@ import es.maquina.webservice.persistencia.dominio.Registro;
 
 public interface RegistroRepository extends GenericRepository<Registro> {
 
-	List<String> findAll();
+    List<Registro> findAll();
 
-	String findByUsuario(String nombreUsuario);
+    String findByUsuario(String nombreUsuario);
 
 }

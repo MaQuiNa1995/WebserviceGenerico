@@ -18,64 +18,64 @@ import es.maquina.webservice.repository.RegistroRepository;
 @Service("registroService")
 public class RegistroServiceImpl implements RegistroService {
 
-	@Resource(name = "registroRepository")
-	private RegistroRepository registroRepository;
+    @Resource(name = "registroRepository")
+    private RegistroRepository registroRepository;
 
-	/**
-	 * Mensaje que se mostrará al entrar a la web
-	 */
-	private static final String MENSAJE = "Hola, %s! c(^_^c)";
+    /**
+     * Mensaje que se mostrará al entrar a la web
+     */
+    private static final String MENSAJE = "Hola, %s! c(^_^c)";
 
-	private static final Logger LOG = LoggerFactory.getLogger(RegistroServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegistroServiceImpl.class);
 
-	/*
-	 * @see
-	 * es.maquina.webservice.service.RegistroService#crearRegistro(java.lang.String)
-	 */
-	public Respuesta registrarVisita(String nombreUsuario) {
+    /*
+     * @see
+     * es.maquina.webservice.service.RegistroService#crearRegistro(java.lang.String)
+     */
+    public Respuesta registrarVisita(String nombreUsuario) {
 
-		Respuesta respuesta = new Respuesta();
+	Respuesta respuesta = new Respuesta();
 
-		try {
-			existeUsuario(nombreUsuario);
-			if (StringUtils.hasText(nombreUsuario)) {
-				LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombreUsuario));
-				Registro registro = new Registro();
-				registro.setNombreUsuario(nombreUsuario);
-				registroRepository.persist(registro);
-				respuesta.setMensaje(String.format(MENSAJE, nombreUsuario));
-			} else {
-				LOG.warn("No has escrito ningun parametro...");
-				respuesta.setMensaje("No has escrito ningun parametro...");
-			}
-		} catch (UsuarioYaRegistradoException exception) {
-			LOG.error(exception.getLocalizedMessage());
-			respuesta.setMensaje(exception.getLocalizedMessage());
-		}
-
-		return respuesta;
-
+	try {
+	    existeUsuario(nombreUsuario);
+	    if (StringUtils.hasText(nombreUsuario)) {
+		LOG.debug(String.format("Vamos a registrar a %s! En BBDD", nombreUsuario));
+		Registro registro = new Registro();
+		registro.setNombreUsuario(nombreUsuario);
+		registroRepository.persist(registro);
+		respuesta.setMensaje(String.format(MENSAJE, nombreUsuario));
+	    } else {
+		LOG.warn("No has escrito ningun parametro...");
+		respuesta.setMensaje("No has escrito ningun parametro...");
+	    }
+	} catch (UsuarioYaRegistradoException exception) {
+	    LOG.error(exception.getLocalizedMessage());
+	    respuesta.setMensaje(exception.getLocalizedMessage());
 	}
 
-	private void existeUsuario(String nombreUsuario) throws UsuarioYaRegistradoException {
+	return respuesta;
 
-		if (registroRepository.findByUsuario(nombreUsuario).isEmpty() == Boolean.FALSE) {
-			throw new UsuarioYaRegistradoException(nombreUsuario);
-		}
+    }
+
+    private void existeUsuario(String nombreUsuario) throws UsuarioYaRegistradoException {
+
+	if (registroRepository.findByUsuario(nombreUsuario).isEmpty() == Boolean.FALSE) {
+	    throw new UsuarioYaRegistradoException(nombreUsuario);
 	}
+    }
 
-	/*
-	 * @see
-	 * es.maquina.webservice.service.RegistroService#obtenerRegistrados(java.lang.
-	 * String)
-	 */
-	@Override
-	public List<String> obtenerRegistrados() {
+    /*
+     * @see
+     * es.maquina.webservice.service.RegistroService#obtenerRegistrados(java.lang.
+     * String)
+     */
+    @Override
+    public List<Registro> obtenerRegistrados() {
 
-		LOG.trace("Vamos a ver los usuarios que han entrado al enlace");
+	LOG.trace("Vamos a ver los usuarios que han entrado al enlace");
 
-		return Collections.unmodifiableList(registroRepository.findAll());
+	return Collections.unmodifiableList(registroRepository.findAll());
 
-	}
+    }
 
 }
