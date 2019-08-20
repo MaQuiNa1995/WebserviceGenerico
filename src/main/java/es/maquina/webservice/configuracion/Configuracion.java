@@ -1,18 +1,3 @@
-/*
- * Copyright 2016 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package es.maquina.webservice.configuracion;
 
 import javax.sql.DataSource;
@@ -45,72 +30,115 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Configuracion {
 
-	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.maquina.webservice.persistencia.dominio";
+    private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.maquina.webservice.persistencia.dominio";
 
-	@Bean
-	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> customContainer() {
+    /**
+     * Método usado para la creacion del bean encargado de la redirección a un html
+     * en caso de darse X errores
+     * <p>
+     * En este caso tenemos:
+     * 
+     * <UL>
+     * <LI>401 Sin autorización</LI>
+     * <LI>404 Url desconocida o no mapeda</LI>
+     * <LI>500 Error genérico del servidor</LI>
+     * </UL>
+     * 
+     * @return {@link org.springframework.boot.web.server.WebServerFactoryCustomizer}
+     *         bean encargado de la redirección en caso de error
+     */
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> customContainer() {
 
-		return new WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>() {
+	return factory -> {
+	    ErrorPage paginaError401 = new ErrorPage(HttpStatus.UNAUTHORIZED, "/401.html");
+	    ErrorPage paginaError404 = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html");
+	    ErrorPage paginaError500 = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500.html");
 
-			@Override
-			public void customize(ConfigurableServletWebServerFactory factory) {
-				ErrorPage paginaError401 = new ErrorPage(HttpStatus.UNAUTHORIZED, "/401.html");
-				ErrorPage paginaError404 = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html");
-				ErrorPage paginaError500 = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500.html");
+	    factory.addErrorPages(paginaError401, paginaError404, paginaError500);
+	};
+    }
 
-				factory.addErrorPages(paginaError401, paginaError404, paginaError500);
+    /**
+     * Creación del bean encargado de la conexión con base de datos
+     * 
+     * @return {@link javax.sql.DataSource} objeto encargado de la conexión a base
+     *         de datos
+     */
+    @Bean
+    public DataSource dataSource() {
+	BasicDataSource dataSource = new BasicDataSource();
+	dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+	dataSource.setUrl("jdbc:hsqldb:mem:maquina1995");
+	dataSource.setUsername("sa");
+	dataSource.setPassword("");
+	dataSource.setInitialSize(5);
+	dataSource.setMaxIdle(10);
+	dataSource.setPoolPreparedStatements(Boolean.TRUE);
+	dataSource.setMaxOpenPreparedStatements(5);
+	return dataSource;
 
-			}
-		};
-	}
+    }
 
-	@Bean
-	public DataSource dataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-		dataSource.setUrl("jdbc:hsqldb:mem:maquina1995");
-		dataSource.setUsername("sa");
-		dataSource.setPassword("");
-		dataSource.setInitialSize(5);
-		dataSource.setMaxIdle(10);
-		dataSource.setPoolPreparedStatements(Boolean.TRUE);
-		dataSource.setMaxOpenPreparedStatements(5);
-		return dataSource;
+    /**
+     * Creación del bean encargado de las transacciones
+     * 
+     * @return {@link org.springframework.orm.jpa.JpaTransactionManager} objeto
+     *         encargado de las transacciones en base de datos
+     */
+    @Bean
+    public JpaTransactionManager jpaTransactionManager() {
+	JpaTransactionManager transactionManager = new JpaTransactionManager();
+	transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+	return transactionManager;
+    }
 
-	}
+    /**
+     * Creación del bean encargado de gestionar las entidades que podamos tener en
+     * la aplicación
+     * 
+     * @return {@link org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean}
+     *         objeto encargado de la gestion de entidades
+     */
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
 
-	@Bean
-	public JpaTransactionManager jpaTransactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
-		return transactionManager;
-	}
+	LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+	entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdaptor());
+	entityManagerFactoryBean.setDataSource(dataSource());
+	entityManagerFactoryBean.setPersistenceUnitName("MaQuiNaPersistenceUnit");
+	entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+	entityManagerFactoryBean.setPackagesToScan(ENTITYMANAGER_PACKAGES_TO_SCAN);
 
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+	return entityManagerFactoryBean;
+    }
 
-		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setJpaVendorAdapter(vendorAdaptor());
-		entityManagerFactoryBean.setDataSource(dataSource());
-		entityManagerFactoryBean.setPersistenceUnitName("MaQuiNaPersistenceUnit");
-		entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-		entityManagerFactoryBean.setPackagesToScan(ENTITYMANAGER_PACKAGES_TO_SCAN);
+    /**
+     * Método encargado de la configuración de la base de datos que se va a usar en
+     * la aplicación
+     * 
+     * @return {@link org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter}
+     */
+    private HibernateJpaVendorAdapter hibernateJpaVendorAdaptor() {
+	HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+	vendorAdapter.setShowSql(Boolean.TRUE);
+	vendorAdapter.setGenerateDdl(Boolean.TRUE);
+	vendorAdapter.setDatabase(Database.HSQL);
+	return vendorAdapter;
+    }
 
-		return entityManagerFactoryBean;
-	}
-
-	private HibernateJpaVendorAdapter vendorAdaptor() {
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setShowSql(Boolean.TRUE);
-		vendorAdapter.setGenerateDdl(Boolean.TRUE);
-		vendorAdapter.setDatabase(Database.HSQL);
-		return vendorAdapter;
-	}
-
-	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any()).build();
-	}
+    /**
+     * Bean encargado de la configuración de Swagger
+     * 
+     * @return {@link springfox.documentation.spring.web.plugins.Docket} bean
+     *         encargado de la configuración de swagger
+     */
+    @Bean
+    public Docket swaggerApi() {
+	return new Docket(DocumentationType.SWAGGER_2).select()
+		.apis(RequestHandlerSelectors.any())
+		.paths(PathSelectors.any())
+		.build();
+    }
 
 }
