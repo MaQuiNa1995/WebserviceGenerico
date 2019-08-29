@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -5,8 +6,9 @@
 
 	<groupId>org.springframework</groupId>
 	<artifactId>WebServiceEjemplo</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.0-BETA</version>
 	<name>WebServiceEjemplo</name>
+	<packaging>war</packaging>
 	<description>proyecto para el aprendizaje del uso de la capa controller en webservices</description>
 
 	<parent>
@@ -21,14 +23,12 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
+		<application>pedidosjapon</application>
+		<version>0.0.1</version>
+
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.2.Final</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -44,8 +44,19 @@
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -73,21 +84,59 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>com.google.appengine</groupId> -->
+			<!-- <artifactId>appengine-maven-plugin</artifactId> -->
+			<!-- <version>1.9.76</version> -->
+
+
+			<!-- </plugin> -->
+
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
-				<version>1.3.2</version>
+				<version>1.2.1</version>
 				<configuration>
-					<version>1</version>
+					<address>0.0.0.0</address>
+					<port>8080</port>
+					<oauth2>true</oauth2>
+					<disableUpdateCheck>true</disableUpdateCheck>
+					<noCookies>true</noCookies>
+					<jvmFlags>
+						<jvmFlag>
+							-Ddatastore.backing_store=local_db.bin
+						</jvmFlag>
+					</jvmFlags>
 				</configuration>
+			</plugin>
+
+			<!-- <plugin> -->
+			<!-- <groupId>com.google.appengine</groupId> -->
+			<!-- <artifactId>appengine-maven-plugin</artifactId> -->
+			<!-- <version>3.6.1</version> -->
+			<!-- </plugin> -->
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 		<filters>
@@ -109,7 +158,19 @@
 			<id>spring-releases</id>
 			<url>https://repo.spring.io/libs-release</url>
 		</repository>
+		<repository>
+			<id>datanucleus</id>
+			<name>Datanucleus Repository</name>
+			<url>http://www.datanucleus.org/downloads/maven2</url>
+		</repository>
+		<repository>
+			<id>atlassian</id>
+			<name>Atlassian Repository</name>
+			<url>https://maven.atlassian.com/repository/centralmirror</url>
+		</repository>
 	</repositories>
+
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-releases</id>

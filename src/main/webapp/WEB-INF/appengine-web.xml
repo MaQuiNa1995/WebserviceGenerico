@@ -1,0 +1,13 @@
+<appengine-web-app
+	xmlns="http://appengine.google.com/ns/1.0">
+	<version>1</version>
+	<application>pedidosjapon</application>
+
+	<threadsafe>true</threadsafe>
+	<runtime>java8</runtime>
+
+	<!-- <system-properties> -->
+	<!-- <property name="java.util.logging.config.file" -->
+	<!-- value="WEB-INF/classes/log4.properties" /> -->
+	<!-- </system-properties> -->
+</appengine-web-app>
