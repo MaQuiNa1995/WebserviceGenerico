@@ -18,6 +18,8 @@ import es.maquina.webservice.repository.RegistroRepositoryImpl;
 
 /**
  * 
+ * Clase que representa el registro que será guardado en base de datos
+ * 
  */
 @Entity
 @Table(name = RegistroRepositoryImpl.NOMBRE_TABLA)
@@ -25,11 +27,22 @@ import es.maquina.webservice.repository.RegistroRepositoryImpl;
 @NamedQuery(name = RegistroRepositoryImpl.EXISTE_USUARIO, query = "select reg.nombreUsuario from Registro reg where reg.nombreUsuario=:nombreUsuario", comment = "Query para saber si el nombre ya está registrado")
 public class Registro {
 
+    /**
+     * Id de la entidad
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Nombre de usuario de la entidad
+     */
     @Column(name = "NOMBRE_USUARIO")
     private String nombreUsuario;
+
+    /**
+     * Tiempo de auditoría de cuando fue creado o actualizado el registro
+     */
     @Column(name = "TIEMPO_CREACION")
     private LocalDateTime tiempoCreacion;
 
@@ -57,6 +70,12 @@ public class Registro {
 	this.tiempoCreacion = tiempoCreacion;
     }
 
+    /**
+     * Método ejecutado antes de hacer un
+     * {@link es.maquina.webservice.repository.GenericRepositoryImpl#persist(Object)}
+     * o un
+     * {@link es.maquina.webservice.repository.GenericRepositoryImpl#merge(Object)}
+     */
     @PrePersist
     @PreUpdate
     private void actualizarAuditoria() {

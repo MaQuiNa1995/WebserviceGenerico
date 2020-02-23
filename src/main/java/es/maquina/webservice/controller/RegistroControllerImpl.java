@@ -29,36 +29,24 @@ import es.maquina.webservice.dominio.Respuesta;
 import es.maquina.webservice.persistencia.dominio.Registro;
 import es.maquina.webservice.service.RegistroService;
 
-/**
- * Creador de los EndPoints
- *
- * @author MaQuiNa1995
- */
 @RestController
 @Controller("registroController")
 public class RegistroControllerImpl implements RegistroController {
 
+    /**
+     * Clase encargada de la lógica de negocio de la entidad {@link Registro}
+     */
     @Resource(name = "registroService")
     private RegistroService registroService;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * es.maquina.webservice.controller.RegistroController#saludarUsuario(java.lang.
-     * String)
-     */
+    @Override
     @GetMapping(path = "/saludar")
     public Respuesta saludarUsuario(@RequestParam(value = "nombre") String nombre) {
 
 	return registroService.registrarVisita(nombre);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see es.maquina.webservice.controller.RegistroController#verRegistro()
-     */
+    @Override
     @GetMapping(path = "/verRegistrados")
     public List<Registro> verRegistro() {
 

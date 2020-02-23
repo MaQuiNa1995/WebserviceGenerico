@@ -16,13 +16,16 @@
 package es.maquina.webservice.dominio;
 
 /**
- * Clase que contendrá una cadena informativa al usuario que ha llamado al
- * webservice
+ * Clase encargada de contener un mensaje informativo que será enviado al
+ * usuario o aplicación que llamó al webservice
  * 
  * @author MaQuiNa1995
  */
 public class Respuesta {
 
+    /*
+     * Mensaje de la respuesta
+     */
     private String mensaje;
 
     public void setMensaje(String mensaje) {

@@ -22,7 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Clase de configuracion de beans (contexto de spring) a traves de Beans
+ * Clase de configuracion de spring
  * 
  * @author MaQuiNa1995
  */
@@ -30,6 +30,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Configuracion {
 
+    /**
+     * Ruta del paquete donde buscar clases candidatas a entidad
+     */
     private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "es.maquina.webservice.persistencia.dominio";
 
     /**
@@ -38,11 +41,11 @@ public class Configuracion {
      * <p>
      * En este caso tenemos:
      * 
-     * <UL>
-     * <LI>401 Sin autorización</LI>
-     * <LI>404 Url desconocida o no mapeda</LI>
-     * <LI>500 Error genérico del servidor</LI>
-     * </UL>
+     * <ul>
+     * <li>401 Sin autorización</li>
+     * <li>404 Url desconocida o no mapeda</li>
+     * <li>500 Error genérico del servidor</li>
+     * </ul>
      * 
      * @return {@link org.springframework.boot.web.server.WebServerFactoryCustomizer}
      *         bean encargado de la redirección en caso de error
@@ -83,13 +86,16 @@ public class Configuracion {
     /**
      * Creación del bean encargado de las transacciones
      * 
+     * @param dataSource {@link DataSource} objeto encargado de la conexión a base
+     *                   de datos {@link #dataSource()}
+     * 
      * @return {@link org.springframework.orm.jpa.JpaTransactionManager} objeto
      *         encargado de las transacciones en base de datos
      */
     @Bean
-    public JpaTransactionManager jpaTransactionManager() {
+    public JpaTransactionManager jpaTransactionManager(DataSource dataSource) {
 	JpaTransactionManager transactionManager = new JpaTransactionManager();
-	transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+	transactionManager.setEntityManagerFactory(entityManagerFactoryBean(dataSource).getObject());
 	return transactionManager;
     }
 
@@ -97,15 +103,18 @@ public class Configuracion {
      * Creación del bean encargado de gestionar las entidades que podamos tener en
      * la aplicación
      * 
+     * @param dataSource {@link DataSource} objeto encargado de la conexión a base
+     *                   de datos {@link #dataSource()}
+     * 
      * @return {@link org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean}
      *         objeto encargado de la gestion de entidades
      */
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(DataSource dataSource) {
 
 	LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 	entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdaptor());
-	entityManagerFactoryBean.setDataSource(dataSource());
+	entityManagerFactoryBean.setDataSource(dataSource);
 	entityManagerFactoryBean.setPersistenceUnitName("MaQuiNaPersistenceUnit");
 	entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 	entityManagerFactoryBean.setPackagesToScan(ENTITYMANAGER_PACKAGES_TO_SCAN);
@@ -135,10 +144,8 @@ public class Configuracion {
      */
     @Bean
     public Docket swaggerApi() {
-	return new Docket(DocumentationType.SWAGGER_2).select()
-		.apis(RequestHandlerSelectors.any())
-		.paths(PathSelectors.any())
-		.build();
+	return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+		.paths(PathSelectors.any()).build();
     }
 
 }
