@@ -1,5 +1,6 @@
-\.settings/
+\.settings
 \.classpath
 \.project
 \target
+\bin
 \Log
