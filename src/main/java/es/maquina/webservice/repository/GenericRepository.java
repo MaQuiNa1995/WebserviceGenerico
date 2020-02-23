@@ -7,27 +7,27 @@ package es.maquina.webservice.repository;
  */
 public interface GenericRepository<M> {
 
-	/**
-	 * Hace el persist de la entidad pasada como parametro
-	 * 
-	 * @param objetoPersistir el objeto a persistir
-	 * @return la entidad persistida en base de datos
-	 */
-	M persist(M objetoPersistir);
+    /**
+     * Método usado para persistir un objeto pasado como parámetro
+     * 
+     * @param objetoPersistir el objeto a persistir
+     * @return la entidad persistida en base de datos
+     */
+    M persist(M objetoPersistir);
 
-	/**
-	 * Hace el merge de la entidad pasada como parametro
-	 * 
-	 * @param objetoUpdatear el objeto a modificar
-	 * @return the M
-	 */
-	M merge(M objetoUpdatear);
+    /**
+     * Método usado para mergear un objeto pasado como parámetro
+     * 
+     * @param objetoUpdatear el objeto a modificar
+     * @return the M
+     */
+    M merge(M objetoUpdatear);
 
-	/**
-	 * Se obtiene la clase del Repository que se ha usado en el generico
-	 * 
-	 * @return clase que usa el repository para la persistencia
-	 */
-	public abstract Class<M> getClassDeM();
+    /**
+     * Se obtiene la clase del Repository que se ha usado en el generico
+     * 
+     * @return clase que usa el repository para la persistencia
+     */
+    public abstract Class<M> getClassDeM();
 
 }
