@@ -10,8 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author MaQuina1995
  */
 @SpringBootApplication
-@ComponentScan(basePackages = { "es.maquina.webservice.controller", "es.maquina.webservice.service",
-	"es.maquina.webservice.repository" })
+@ComponentScan(basePackages = "es.maquina.webservice")
 public class Main {
 
     /**
