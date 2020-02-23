@@ -8,7 +8,7 @@ import es.maquina.webservice.persistencia.dominio.Registro;
 /**
  * Clase encargada de la exposición de 2 endpoints
  * 
- * <li><a href="http:localhost:8080/saludar?nombre">/saludar</a></li>
+ * <li><a href="http://localhost:8080/saludar?nombre=TuNombre">/saludar</a></li>
  * <li><a href="http:localhost:8080/verRegistrados">/verRegistrados</a></li>
  *
  * @author MaQuiNa1995

@@ -31,7 +31,7 @@ public class RegistroRepositoryImpl extends GenericRepositoryImpl<Registro> impl
      * Nombre de consulta para encontrar todas las entidades de la tabla que tengan
      * X nombre
      */
-    public static final String EXISTE_USUARIO = "Registro.findByNombre";
+    public static final String EXISTE_USUARIO = "Registro.findByNombrehola";
 
     @Override
     public List<Registro> findAll() {
