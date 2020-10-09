@@ -1,4 +1,4 @@
-package es.maquina.webservice.service;
+package maquina.webservice.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import es.maquina.webservice.dto.AbstractDto;
-import es.maquina.webservice.mapper.AbstractMapper;
+import maquina.webservice.dto.AbstractDto;
+import maquina.webservice.mapper.AbstractMapper;
 
 /**
  * 

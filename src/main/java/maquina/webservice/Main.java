@@ -1,4 +1,4 @@
-package es.maquina.webservice;
+package maquina.webservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

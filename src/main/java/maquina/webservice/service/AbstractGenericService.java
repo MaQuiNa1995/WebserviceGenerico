@@ -1,9 +1,9 @@
-package es.maquina.webservice.service;
+package maquina.webservice.service;
 
 import java.io.Serializable;
 import java.util.List;
 
-import es.maquina.webservice.dto.AbstractDto;
+import maquina.webservice.dto.AbstractDto;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package es.maquina.webservice.dto;
+package maquina.webservice.dto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

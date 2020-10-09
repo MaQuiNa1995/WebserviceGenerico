@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package es.maquina.webservice.controller;
+package maquina.webservice.controller;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import es.maquina.webservice.dto.AbstractDto;
-import es.maquina.webservice.service.AbstractGenericService;
+import maquina.webservice.dto.AbstractDto;
+import maquina.webservice.service.AbstractGenericService;
 
 /**
  * 

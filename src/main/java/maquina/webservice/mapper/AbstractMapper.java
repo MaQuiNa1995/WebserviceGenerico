@@ -1,4 +1,4 @@
-package es.maquina.webservice.mapper;
+package maquina.webservice.mapper;
 
 public interface AbstractMapper<T, D> {
 

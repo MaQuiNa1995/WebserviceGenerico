@@ -1,4 +1,4 @@
-package es.maquina.webservice.dominio;
+package maquina.webservice.dominio;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

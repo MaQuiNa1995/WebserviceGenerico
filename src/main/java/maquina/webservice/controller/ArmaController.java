@@ -14,15 +14,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package es.maquina.webservice.controller;
+package maquina.webservice.controller;
 
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import es.maquina.webservice.dominio.Arma;
-import es.maquina.webservice.dto.ArmaDto;
-import es.maquina.webservice.service.ArmaService;
+import maquina.webservice.dominio.Arma;
+import maquina.webservice.dto.ArmaDto;
+import maquina.webservice.service.ArmaService;
 
 @RestController
 public class ArmaController extends AbstractGenericController<ArmaService, Arma, UUID, ArmaDto> {

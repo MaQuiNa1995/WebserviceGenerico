@@ -1,4 +1,4 @@
-package es.maquina.webservice.configuracion;
+package maquina.webservice.configuracion;
 
 import javax.sql.DataSource;
 
