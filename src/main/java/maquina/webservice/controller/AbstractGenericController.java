@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,8 +45,7 @@ public abstract class AbstractGenericController<S extends AbstractGenericService
         K extends Serializable,
         D extends AbstractDto<K>> {
 
-	@Autowired
-	private S service;
+	protected S service;
 
 	@PostMapping
 	public T create(@RequestBody D dto) {
