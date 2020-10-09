@@ -49,22 +49,22 @@ public abstract class AbstractGenericController<S extends AbstractGenericService
 	@Autowired
 	private S service;
 
-	@PostMapping(path = "/create")
+	@PostMapping
 	public T create(@RequestBody D dto) {
 		return service.create(dto);
 	}
 
-	@GetMapping({ "/find", "/find/{id}" })
+	@GetMapping({ "", "/{id}" })
 	public List<D> find(@PathVariable(required = false) K id) {
 		return id == null ? service.findAll() : Arrays.asList(service.find(id));
 	}
 
-	@PutMapping(path = "/update")
+	@PutMapping
 	public T update(@RequestBody D dto) {
 		return service.update(dto);
 	}
 
-	@DeleteMapping(path = "/delete")
+	@DeleteMapping
 	public void delete(@RequestParam K id) {
 		service.delete(id);
 	}
