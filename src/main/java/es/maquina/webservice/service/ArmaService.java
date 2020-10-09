@@ -10,6 +10,6 @@ import es.maquina.webservice.mapper.ArmaMapper;
 import es.maquina.webservice.repository.ArmaRepository;
 
 @Service
-public class ArmaService extends AbstractGenericService<Arma, UUID, ArmaDto, ArmaRepository, ArmaMapper> {
+public class ArmaService extends AbstractGenericServiceImpl<Arma, UUID, ArmaDto, ArmaRepository, ArmaMapper> {
 
 }

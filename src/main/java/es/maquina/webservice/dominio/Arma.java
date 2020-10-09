@@ -1,5 +1,6 @@
 package es.maquina.webservice.dominio;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Arma {
+public class Arma implements Serializable {
 
 	@Id
 	@GeneratedValue(generator = "uuid")
