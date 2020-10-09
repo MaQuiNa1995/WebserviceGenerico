@@ -1,19 +1,3 @@
-
-/*
- * Copyright 2016 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package maquina.webservice.controller;
 
 import java.io.Serializable;
@@ -28,10 +12,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import maquina.webservice.dto.AbstractDto;
 import maquina.webservice.service.AbstractGenericService;
 
 /**
+ * Clase abstracta para la creación de webservices de nivel 2
  * 
  * @author MaQuiNa1995
  *
@@ -40,7 +27,9 @@ import maquina.webservice.service.AbstractGenericService;
  * @param <K> clave primaria de la entity
  * @param <D> dto
  */
-public abstract class AbstractGenericController<S extends AbstractGenericService<T, K, D>,
+@ApiResponses(value = { @ApiResponse(responseCode = "200",
+        description = "Success|OK") })
+public abstract class AbstractWebserviceLv2Controller<S extends AbstractGenericService<T, K, D>,
         T extends Serializable,
         K extends Serializable,
         D extends AbstractDto<K>> {

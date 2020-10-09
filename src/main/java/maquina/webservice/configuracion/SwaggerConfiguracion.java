@@ -14,10 +14,8 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfiguracion {
 
 	@Bean
@@ -26,13 +24,13 @@ public class SwaggerConfiguracion {
 		        .apis(RequestHandlerSelectors.basePackage(SwaggerConstants.PROJECT_CONTROLLER_PATH))
 		        .paths(PathSelectors.any())
 		        .build()
-		        .apiInfo(apiInfo())
+		        .apiInfo(this.apiInfo())
 		        .additionalModels(typeResolver.resolve(ArmaDto.class));
 	}
 
 	private ApiInfo apiInfo() {
 
-		final Contact contacto = new Contact(SwaggerConstants.PROJECT_CONTACT_NAME, SwaggerConstants.CONTACT_EMAIL,
+		final Contact contacto = new Contact(SwaggerConstants.PROJECT_CONTACT_NAME, SwaggerConstants.CONTACT_URL,
 		        SwaggerConstants.CONTACT_EMAIL);
 
 		return new ApiInfoBuilder().title(SwaggerConstants.PROJECT_TITLE)
