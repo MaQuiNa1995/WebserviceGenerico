@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import maquina.webservice.dominio.Persistible;
 import maquina.webservice.dto.AbstractDto;
 import maquina.webservice.service.AbstractGenericService;
 
@@ -27,10 +26,8 @@ import maquina.webservice.service.AbstractGenericService;
  * @param <K> clave primaria de la entity
  * @param <D> dto
  */
-@ApiResponses(value = { @ApiResponse(responseCode = "200",
-        description = "Success|OK") })
 public abstract class AbstractWebserviceLv2Controller<S extends AbstractGenericService<T, K, D>,
-        T extends Serializable,
+        T extends Persistible<K>,
         K extends Serializable,
         D extends AbstractDto<K>> {
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import maquina.webservice.dominio.Persistible;
 import maquina.webservice.dto.AbstractDto;
 import maquina.webservice.service.AbstractGenericService;
 
@@ -24,7 +25,7 @@ import maquina.webservice.service.AbstractGenericService;
  * @param <D> dto
  */
 public abstract class AbstractWebserviceLv1Controller<S extends AbstractGenericService<T, K, D>,
-        T extends Serializable,
+        T extends Persistible<K>,
         K extends Serializable,
         D extends AbstractDto<K>> {
 

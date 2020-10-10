@@ -3,6 +3,7 @@ package maquina.webservice.service;
 import java.io.Serializable;
 import java.util.List;
 
+import maquina.webservice.dominio.Persistible;
 import maquina.webservice.dto.AbstractDto;
 
 /**
@@ -13,7 +14,7 @@ import maquina.webservice.dto.AbstractDto;
  * @param <K> id de la entidad
  * @param <D> dto
  */
-public interface AbstractGenericService<T extends Serializable, K extends Serializable, D extends AbstractDto<K>> {
+public interface AbstractGenericService<T extends Persistible<K>, K extends Serializable, D extends AbstractDto<K>> {
 
 	T create(D dto);
 

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import maquina.webservice.dominio.Persistible;
 import maquina.webservice.dto.AbstractDto;
 import maquina.webservice.mapper.AbstractMapper;
 
@@ -20,7 +21,7 @@ import maquina.webservice.mapper.AbstractMapper;
  * @param <R> repository
  * @param <M> mapper
  */
-public abstract class AbstractGenericServiceImpl<T extends Serializable,
+public abstract class AbstractGenericServiceImpl<T extends Persistible<K>,
         K extends Serializable,
         D extends AbstractDto<K>,
         R extends JpaRepository<T, K>,
