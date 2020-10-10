@@ -3,11 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework</groupId>
-	<artifactId>WebServiceEjemplo</artifactId>
-	<version>1.0.0-RELEASE</version>
-	<name>WebServiceEjemplo</name>
-	<description>proyecto para el aprendizaje del uso de la capa controller en webservices</description>
+	<groupId>maquina1995</groupId>
+	<artifactId>webservice</artifactId>
+	<version>2.0.0</version>
+	
+	<name>webservice </name>
+	<description>Proyecto para la muestra de las diferencias entre un webservice de nivel 1, 2 y 3</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -46,7 +47,7 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
-			<version>3.0.0</version>
+			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
