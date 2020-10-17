@@ -36,7 +36,7 @@ public abstract class AbstractWebserviceLv1Controller<S extends AbstractGenericS
 	}
 
 	@GetMapping(path = "/find")
-	public ResponseEntity<D> find(K id) {
+	public ResponseEntity<D> find(@RequestParam K id) {
 		return ResponseEntity.ok(service.find(id));
 	}
 
