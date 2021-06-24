@@ -11,27 +11,25 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import maquina1995.webservice.dominio.Persistible;
 import maquina1995.webservice.dto.PersistibleDto;
 import maquina1995.webservice.mapper.AbstractMapper;
 
-@Rollback
-@SpringBootTest(value = "maquina1995.webservice")
+@DataJpaTest
+@ComponentScan(value = "maquina1995.webservice")
 abstract class AbstractGenericServiceTest<T extends Persistible<K>,
         K extends Serializable,
-        D extends PersistibleDto<K>,
-        S extends AbstractGenericService<T, K, D>,
-        M extends AbstractMapper<T, D>> {
+        D extends PersistibleDto<K>> {
 
 	@PersistenceContext
 	protected EntityManager entityManager;
 	@Autowired
-	protected S sut;
+	protected AbstractGenericService<K, D> sut;
 	@Autowired
-	protected M mapper;
+	protected AbstractMapper<T, D> mapper;
 
 	protected abstract D createDto();
 
@@ -44,11 +42,11 @@ abstract class AbstractGenericServiceTest<T extends Persistible<K>,
 		D dto = this.createDto();
 
 		// when
-		T entity = sut.create(dto);
+		D dtoDatabase = sut.create(dto);
 
 		// then
-		Assertions.assertAll(() -> Assertions.assertEquals(mapper.dtoToEntity(dto), entity),
-		        () -> Assertions.assertNotNull(entity.getId()));
+		Assertions.assertAll(() -> Assertions.assertEquals(dto, dtoDatabase),
+		        () -> Assertions.assertNotNull(dtoDatabase.getId()));
 	}
 
 	@Test
@@ -90,11 +88,11 @@ abstract class AbstractGenericServiceTest<T extends Persistible<K>,
 		dto.setId(entity.getId());
 
 		// when
-		T entityUpdated = sut.update(dto);
+		D dtoDatabase = sut.create(dto);
 
 		// then
-		Assertions.assertAll(() -> Assertions.assertEquals(mapper.dtoToEntity(dto), entityUpdated),
-		        () -> Assertions.assertEquals(dto.getId(), entityUpdated.getId()));
+		Assertions.assertAll(() -> Assertions.assertEquals(dto, dtoDatabase),
+		        () -> Assertions.assertNotNull(dtoDatabase.getId()));
 	}
 
 	@Test

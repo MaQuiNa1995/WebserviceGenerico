@@ -2,9 +2,8 @@ package maquina1995.webservice.service;
 
 import maquina1995.webservice.dominio.Arma;
 import maquina1995.webservice.dto.ArmaDto;
-import maquina1995.webservice.mapper.ArmaMapper;
 
-class ArmaServiceTest extends AbstractGenericServiceTest<Arma, Long, ArmaDto, ArmaService, ArmaMapper> {
+class ArmaServiceTest extends AbstractGenericServiceTest<Arma, Long, ArmaDto> {
 
 	@Override
 	protected ArmaDto createDto() {

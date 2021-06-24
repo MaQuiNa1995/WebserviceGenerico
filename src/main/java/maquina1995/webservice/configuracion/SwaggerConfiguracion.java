@@ -3,10 +3,7 @@ package maquina1995.webservice.configuracion;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.fasterxml.classmate.TypeResolver;
-
 import maquina1995.webservice.constant.SwaggerConstants;
-import maquina1995.webservice.dto.ArmaDto;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -19,13 +16,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SwaggerConfiguracion {
 
 	@Bean
-	public Docket swaggerApi(TypeResolver typeResolver) {
+	public Docket swaggerApi() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 		        .apis(RequestHandlerSelectors.basePackage(SwaggerConstants.PROJECT_CONTROLLER_PATH))
 		        .paths(PathSelectors.any())
 		        .build()
-		        .apiInfo(this.apiInfo())
-		        .additionalModels(typeResolver.resolve(ArmaDto.class));
+		        .apiInfo(this.apiInfo());
 	}
 
 	private ApiInfo apiInfo() {

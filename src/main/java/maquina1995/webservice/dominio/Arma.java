@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,10 @@ import lombok.Setter;
 public class Arma implements Persistible<Long>, Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "sequence",
+	        strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "sequence",
+	        allocationSize = 1)
 	@EqualsAndHashCode.Exclude
 	private Long id;
 	private String nombre;
@@ -39,7 +43,7 @@ public class Arma implements Persistible<Long>, Serializable {
 
 	@PrePersist
 	private void actualizarAuditoria() {
-		tiempoCreacion = LocalDateTime.now(ZoneId.of("Europe/Madrid"));
+		this.tiempoCreacion = LocalDateTime.now(ZoneId.of("Europe/Madrid"));
 	}
 
 }

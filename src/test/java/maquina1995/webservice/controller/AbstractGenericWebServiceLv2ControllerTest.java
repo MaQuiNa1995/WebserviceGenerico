@@ -1,5 +1,6 @@
 package maquina1995.webservice.controller;
 
+import java.beans.Introspector;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -13,74 +14,81 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import maquina1995.webservice.dominio.Persistible;
 import maquina1995.webservice.dto.PersistibleDto;
-import maquina1995.webservice.service.AbstractGenericService;
 
-@Rollback
 @SqlGroup({ @Sql(scripts = { "classpath:setup.sql" },
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
         @Sql(scripts = { "classpath:clean.sql" },
                 executionPhase = ExecutionPhase.AFTER_TEST_METHOD) })
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-abstract class AbstractGenericWebServiceLv2ControllerTest<C extends AbstractWebserviceLv2Controller<S, T, K, D>,
-        T extends Persistible<K>,
+abstract class AbstractGenericWebServiceLv2ControllerTest<E extends Persistible<K>,
         K extends Serializable,
-        D extends PersistibleDto<K>,
-        S extends AbstractGenericService<T, K, D>> {
+        D extends PersistibleDto<K>> {
 
 	@Autowired
-	protected TestRestTemplate restTemplate;
+	protected TestRestTemplate testRestTemplate;
+
 	@PersistenceContext
 	protected EntityManager entityManager;
 
+	@LocalServerPort
+	private Integer localPort;
+
 	protected abstract D createDto();
 
-	protected abstract T createEntity();
-
-//	@Test
-//	void createTest() throws Exception {
-//		// given
-//		D dto = this.createDto();
-//
-//		// when
-//		ResponseEntity<? extends ArrayList<D>> responseEntity = restTemplate.postForEntity("/arma", dto,
-//		        this.obtenerClassListDtoGenerico());
-//
-//		// then
-//		Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue()),
-//		        () -> Assertions.assertFalse(CollectionUtils.isEmpty(responseEntity.getBody())),
-//		        () -> Assertions.assertEquals(1L, responseEntity.getBody()
-//		                .size()));
-//	}
+	protected abstract K createPrimaryKey();
 
 	@Test
-	void findTest() throws Exception {
+	void createTest() {
+
+		// given
+		D dto = this.createDto();
+		HttpEntity<D> httpEntity = new HttpEntity<>(dto);
 
 		// when
-		ResponseEntity<ArrayList<D>> responseEntity = (ResponseEntity<ArrayList<D>>) restTemplate.getForEntity("/arma",
-		        this.obtenerClassListDtoGenerico(), 1L);
+		ResponseEntity<D> responseEntity = testRestTemplate.exchange(this.getPathOfParametizedController()
+		        .toString(), HttpMethod.POST, httpEntity, this.crearDtoParametyzedTypeReference());
 
 		// then
-		Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue()),
-		        () -> Assertions.assertFalse(CollectionUtils.isEmpty(responseEntity.getBody())));
+		D body = responseEntity.getBody();
+		Assertions.assertNotNull(body);
+
+		Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue());
+		Assertions.assertEquals(dto, body);
 
 	}
 
 	@Test
-	void findAllTest() throws Exception {
+	void findTest() {
+		// when
+		ResponseEntity<ArrayList<D>> responseEntity = testRestTemplate
+		        .getForEntity(this.getPathOfParametizedController()
+		                .toString(), this.obtenerClassListDtoGenerico(), 1L);
+
+		// then
+		Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue()),
+		        () -> Assertions.assertFalse(CollectionUtils.isEmpty(responseEntity.getBody())));
+	}
+
+	@Test
+	void findAllTest() {
 
 		// when
-		ResponseEntity<? extends ArrayList<D>> responseEntity = restTemplate.getForEntity("/arma",
-		        obtenerClassListDtoGenerico());
+		ResponseEntity<ArrayList<D>> responseEntity = testRestTemplate
+		        .getForEntity(this.getPathOfParametizedController(), obtenerClassListDtoGenerico());
 
 		// then
 		Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue()),
@@ -89,29 +97,91 @@ abstract class AbstractGenericWebServiceLv2ControllerTest<C extends AbstractWebs
 		                .size()));
 	}
 
-//	@Test
-//	void putTest() throws Exception {
-//		// given
-//		D dto = this.createDto();
-//
-//		// when
-//		ResponseEntity<? extends ArrayList<D>> responseEntity = restTemplate.put("/arma", dto,
-//		        obtenerClassListDtoGenerico());
-//
-//		// then
-//		Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue()),
-//		        () -> Assertions.assertFalse(CollectionUtils.isEmpty(responseEntity.getBody())),
-//		        () -> Assertions.assertEquals(1L, responseEntity.getBody()
-//		                .size()));
-//	}
+	@Test
+	void putTest() {
 
-	private Class<D> obtenerClassDtoGenerico() {
-		ParameterizedType tipoParametrizado = (ParameterizedType) getClass().getGenericSuperclass();
-		return (Class<D>) tipoParametrizado.getActualTypeArguments()[3];
+		// given
+		D dto = this.createDto();
+		dto.setId(this.createPrimaryKey());
+		HttpEntity<D> httpEntity = new HttpEntity<>(dto);
+
+		// when
+		ResponseEntity<D> responseEntity = testRestTemplate.exchange(this.getPathOfParametizedController(),
+		        HttpMethod.PUT, httpEntity, this.crearDtoParametyzedTypeReference());
+
+		// then
+		D body = responseEntity.getBody();
+		Assertions.assertNotNull(body);
+
+		Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue());
+		Assertions.assertEquals(dto, body);
+
 	}
 
-	private Class<? extends ArrayList<D>> obtenerClassListDtoGenerico() {
-		return (Class<? extends ArrayList<D>>) new ArrayList<D>().getClass();
+	@Test
+	void deleteTest() {
+
+		// given
+		K primaryKey = this.createPrimaryKey();
+		HttpEntity<K> httpEntity = new HttpEntity<>(primaryKey);
+
+		// when
+		ResponseEntity<D> responseEntity = testRestTemplate.exchange(this.getPathOfParametizedController(primaryKey),
+		        HttpMethod.DELETE, httpEntity, this.crearDtoParametyzedTypeReference());
+
+		// then
+		Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), responseEntity.getStatusCodeValue());
+
+	}
+
+	/**
+	 * Obtiene un endpoint del controller construido a partir del nombre de la clase
+	 * de dominio asociada {@link E}
+	 * 
+	 * @return {@link String} ruta raiz del controller
+	 */
+	protected String getPathOfParametizedController() {
+		String entityName = this.obtenerClassDtoGenerico(0)
+		        .getSimpleName();
+
+		return new StringBuilder("http://localhost:").append(localPort)
+		        .append("/")
+		        .append(Introspector.decapitalize(entityName))
+		        .toString();
+	}
+
+	/**
+	 * Obtiene un endpoint del controller construido a partir del nombre de la clase
+	 * de dominio asociada {@link E} y su clave primaria {@link K} en formato
+	 * {@link String}
+	 * 
+	 * @return {@link String} ruta raiz del controller
+	 */
+	protected String getPathOfParametizedController(K id) {
+
+		return UriComponentsBuilder.fromHttpUrl(this.getPathOfParametizedController())
+		        .queryParam("id", id)
+		        .build()
+		        .toString();
+	}
+
+	/**
+	 * Crea {@link ParameterizedTypeReference} de un {@link D}
+	 * 
+	 * @return {@link ParameterizedTypeReference} de un {@link D}
+	 */
+	private ParameterizedTypeReference<D> crearDtoParametyzedTypeReference() {
+		return new ParameterizedTypeReference<D>() {
+		};
+	}
+
+	private Class<D> obtenerClassDtoGenerico(Integer index) {
+		ParameterizedType tipoParametrizado = (ParameterizedType) getClass().getGenericSuperclass();
+		return (Class<D>) tipoParametrizado.getActualTypeArguments()[index];
+	}
+
+	private Class<ArrayList<D>> obtenerClassListDtoGenerico() {
+		return (Class<ArrayList<D>>) new ArrayList<D>().getClass();
 	}
 
 }

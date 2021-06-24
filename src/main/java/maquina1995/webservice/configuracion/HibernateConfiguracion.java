@@ -3,12 +3,12 @@ package maquina1995.webservice.configuracion;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-@Configuration
+@SpringBootConfiguration
 public class HibernateConfiguracion {
 
 	@Value(value = "${database.user}")

@@ -15,40 +15,35 @@ import maquina1995.webservice.mapper.AbstractMapper;
  * 
  * @author MaQuiNa1995
  * 
- * @param <T> entidad
+ * @param <E> entidad
  * @param <K> clave primaria entidad
  * @param <D> dto
- * @param <R> repository
- * @param <M> mapper
  */
-public abstract class AbstractGenericServiceImpl<T extends Persistible<K>,
+public abstract class AbstractGenericServiceImpl<E extends Persistible<K>,
         K extends Serializable,
-        D extends PersistibleDto<K>,
-        R extends JpaRepository<T, K>,
-        M extends AbstractMapper<T, D>> implements AbstractGenericService<T, K, D> {
+        D extends PersistibleDto<K>> implements AbstractGenericService<K, D> {
 
 	@Autowired
-	protected R repository;
+	protected JpaRepository<E, K> repository;
 	@Autowired
-	protected M mapper;
+	protected AbstractMapper<E, D> mapper;
 
 	// TODO actualmente es igual al de updatear pero hay que cambiar el Dto que le
 	// llega para que no añada ni el Id ni la fecha de creación
 	@Override
-	public T create(D dto) {
+	public D create(D dto) {
 
-		T entity = mapper.dtoToEntity(dto);
+		E entity = mapper.dtoToEntity(dto);
 
-		return repository.save(entity);
+		return mapper.entityToDto(repository.save(entity));
 	}
 
 	@Override
 	public D find(K id) {
 
-		T entity = repository.findById(id)
-		        .orElse(null);
-
-		return mapper.entityToDto(entity);
+		return repository.findById(id)
+		        .map(mapper::entityToDto)
+		        .get();
 	}
 
 	@Override
@@ -61,11 +56,11 @@ public abstract class AbstractGenericServiceImpl<T extends Persistible<K>,
 	}
 
 	@Override
-	public T update(D dto) {
+	public D update(D dto) {
 
-		T entity = mapper.dtoToEntity(dto);
+		E entity = mapper.dtoToEntity(dto);
 
-		return repository.save(entity);
+		return mapper.entityToDto(repository.save(entity));
 	}
 
 	@Override

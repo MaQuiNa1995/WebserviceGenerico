@@ -18,20 +18,18 @@ import maquina1995.webservice.service.AbstractGenericService;
  * 
  * @author MaQuiNa1995
  *
- * @param <S> service
- * @param <T> entity
+ * @param <E> entity
  * @param <K> clave primaria de la entity
  * @param <D> dto
  */
-public abstract class AbstractWebserviceLv1Controller<S extends AbstractGenericService<T, K, D>,
-        T extends Persistible<K>,
+public abstract class AbstractWebserviceLv1Controller<E extends Persistible<K>,
         K extends Serializable,
         D extends PersistibleDto<K>> {
 
-	protected S service;
+	protected AbstractGenericService<K, D> service;
 
 	@PostMapping(path = "/create")
-	public ResponseEntity<T> create(@RequestBody D dto) {
+	public ResponseEntity<D> create(@RequestBody D dto) {
 		return ResponseEntity.ok(service.create(dto));
 	}
 
@@ -46,7 +44,7 @@ public abstract class AbstractWebserviceLv1Controller<S extends AbstractGenericS
 	}
 
 	@PostMapping(path = "/update")
-	public ResponseEntity<T> update(@RequestBody D dto) {
+	public ResponseEntity<D> update(@RequestBody D dto) {
 		return ResponseEntity.ok(service.update(dto));
 	}
 

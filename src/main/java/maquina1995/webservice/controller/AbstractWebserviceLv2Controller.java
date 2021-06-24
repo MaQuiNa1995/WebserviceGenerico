@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import maquina1995.webservice.dominio.Persistible;
 import maquina1995.webservice.dto.PersistibleDto;
 import maquina1995.webservice.service.AbstractGenericService;
 
@@ -23,38 +22,36 @@ import maquina1995.webservice.service.AbstractGenericService;
  * @author MaQuiNa1995
  *
  * @param <S> service
- * @param <T> entity
+ * @param <E> entity
  * @param <K> clave primaria de la entity
  * @param <D> dto
  */
-public abstract class AbstractWebserviceLv2Controller<S extends AbstractGenericService<T, K, D>,
-        T extends Persistible<K>,
-        K extends Serializable,
-        D extends PersistibleDto<K>> {
+public abstract class AbstractWebserviceLv2Controller<K extends Serializable, D extends PersistibleDto<K>> {
 
 	@Autowired
-	protected S service;
+	protected AbstractGenericService<K, D> service;
 
 	@PostMapping
-	public ResponseEntity<T> create(@RequestBody D dto) {
+	public ResponseEntity<D> create(@RequestBody D dto) {
 		return ResponseEntity.ok(service.create(dto));
 	}
 
-	@GetMapping({ "", "/{id}" })
+	@GetMapping
 	public ResponseEntity<List<D>> find(@RequestParam(required = false) K id) {
 		List<D> dtos = (id == null) ? service.findAll() : Arrays.asList(service.find(id));
 		return ResponseEntity.ok(dtos);
 	}
 
 	@PutMapping
-	public ResponseEntity<T> update(@RequestBody D dto) {
+	public ResponseEntity<D> update(@RequestBody D dto) {
 		return ResponseEntity.ok(service.update(dto));
 	}
 
 	@DeleteMapping
-	public ResponseEntity<K> delete(@RequestParam K id) {
+	public ResponseEntity<D> delete(@RequestParam K id) {
 		service.delete(id);
-		return ResponseEntity.ok(id);
+		return ResponseEntity.noContent()
+		        .build();
 	}
 
 }
