@@ -19,7 +19,7 @@ jobs:
         java-version: 11
 
     - name: Maven Package
-      run: mvn package cobertura:cobertura
+      run: mvn package
     - name: Codacy Coverage Reporter
   # You may pin to the exact commit or the version.
   # uses: codacy/codacy-coverage-reporter-action@31721d7c5d2357955879f3ecbae83bf199c16000
@@ -30,4 +30,4 @@ jobs:
       # API account token to retrieve your remote Codacy configuration for the project being analyzed
         #api-token: # optional
       # Optional comma separated list of coverage reports to send to Codacy
-        coverage-reports: covertura.xml
+        coverage-reports: jacoco.exec
