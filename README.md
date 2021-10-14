@@ -1,0 +1,2 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/894f714f57d94eb5a34c4dfc9f41e254)](https://www.codacy.com/gh/MaQuiNa1995/WebserviceGenerico/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MaQuiNa1995/WebserviceGenerico&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/894f714f57d94eb5a34c4dfc9f41e254)](https://www.codacy.com/gh/MaQuiNa1995/WebserviceGenerico/dashboard?utm_source=github.com&utm_medium=referral&utm_content=MaQuiNa1995/WebserviceGenerico&utm_campaign=Badge_Coverage)
