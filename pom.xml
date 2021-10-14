@@ -6,25 +6,30 @@
 	<groupId>maquina1995</groupId>
 	<artifactId>webservice</artifactId>
 	<version>2.0.0</version>
-	
+
 	<name>webservice </name>
-	<description>Proyecto para la muestra de las diferencias entre un webservice de nivel 1, 2 y 3</description>
+	<description>Webservice de nivel 1 y 2</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.1</version>
+		<version>2.5.5</version>
 	</parent>
 
 	<properties>
 		<swagger.version>3.0.0</swagger.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -76,7 +81,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>0.2.0</version>
+							<version>${lombok.mapstruct.binding.version}</version>
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>

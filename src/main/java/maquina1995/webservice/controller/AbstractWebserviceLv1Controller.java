@@ -3,6 +3,8 @@ package maquina1995.webservice.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +31,7 @@ public abstract class AbstractWebserviceLv1Controller<E extends Persistible<K>,
 	protected AbstractGenericService<K, D> service;
 
 	@PostMapping(path = "/create")
-	public ResponseEntity<D> create(@RequestBody D dto) {
+	public ResponseEntity<D> create(@Valid @RequestBody D dto) {
 		return ResponseEntity.ok(service.create(dto));
 	}
 
@@ -44,7 +46,7 @@ public abstract class AbstractWebserviceLv1Controller<E extends Persistible<K>,
 	}
 
 	@PostMapping(path = "/update")
-	public ResponseEntity<D> update(@RequestBody D dto) {
+	public ResponseEntity<D> update(@Valid @RequestBody D dto) {
 		return ResponseEntity.ok(service.update(dto));
 	}
 

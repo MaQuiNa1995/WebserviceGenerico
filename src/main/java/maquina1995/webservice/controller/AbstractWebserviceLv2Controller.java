@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +34,7 @@ public abstract class AbstractWebserviceLv2Controller<K extends Serializable, D 
 	protected AbstractGenericService<K, D> service;
 
 	@PostMapping
-	public ResponseEntity<D> create(@RequestBody D dto) {
+	public ResponseEntity<D> create(@Valid @RequestBody D dto) {
 		return ResponseEntity.ok(service.create(dto));
 	}
 
@@ -43,7 +45,7 @@ public abstract class AbstractWebserviceLv2Controller<K extends Serializable, D 
 	}
 
 	@PutMapping
-	public ResponseEntity<D> update(@RequestBody D dto) {
+	public ResponseEntity<D> update(@Valid @RequestBody D dto) {
 		return ResponseEntity.ok(service.update(dto));
 	}
 
