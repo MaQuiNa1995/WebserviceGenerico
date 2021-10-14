@@ -8,7 +8,7 @@ class ArmaLv2ControllerTest extends AbstractGenericWebServiceLv2ControllerTest<A
 	@Override
 	protected ArmaDto createDto() {
 		return ArmaDto.builder()
-		        .elemento(300)
+		        .elemento(50)
 		        .elementoActivado(Boolean.FALSE)
 		        .nombre("Lanza De Huesos Dto")
 		        .tipo("Lanza-Pistola Dto")
