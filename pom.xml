@@ -5,7 +5,7 @@
 
 	<groupId>maquina1995</groupId>
 	<artifactId>webservice</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 
 	<name>webservice </name>
 	<description>Webservice de nivel 1 y 2</description>
@@ -13,13 +13,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.5</version>
+		<version>[2,3)</version>
 	</parent>
 
 	<properties>
 		<swagger.version>3.0.0</swagger.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
+		<jacoco.plugin.version>0.8.7</jacoco.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -65,7 +66,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
+				<version>${jacoco.plugin.version}</version>
 				<configuration>
 					<outputDirectory>${project.build.directory}/</outputDirectory>
 					<formats>XML</formats>
@@ -73,6 +74,7 @@
 						<exclude>maquina1995/webservice/dominio/*.class</exclude>
 						<exclude>maquina1995/webservice/repository/*.class</exclude>
 						<exclude>maquina1995/webservice/jackson/*.class</exclude>
+						<exclude>maquina1995/webservice/mapper/*.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>
