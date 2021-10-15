@@ -69,6 +69,11 @@
 				<configuration>
 					<outputDirectory>${project.build.directory}/</outputDirectory>
 					<formats>XML</formats>
+					<excludes>
+						<exclude>maquina1995/webservice/dominio/*.class</exclude>
+						<exclude>maquina1995/webservice/repository/*.class</exclude>
+						<exclude>maquina1995/webservice/jackson/*.class</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
