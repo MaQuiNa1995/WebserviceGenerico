@@ -58,31 +58,25 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!-- JACOCO - CODE COVERAGE REPORTS -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
 				<configuration>
-					<outputDirectory>${site.xml.coverage.outputDirectory}</outputDirectory>
-					<!-- DIRECTORY WHERE 'jacoco.exe' IS GENERATED -->
-					<destFile>jacoco.exec</destFile>
-					<dataFile>jacoco.exec</dataFile>
+					<outputDirectory>${project.build.directory}/</outputDirectory>
+					<formats>XML</formats>
 				</configuration>
 				<executions>
-					<!-- Prepare Jacoco agent -->
 					<execution>
 						<id>docs-jacoco-prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
-					<!-- Create Code Coverage report -->
 					<execution>
 						<id>docs-jacoco-report</id>
 						<phase>prepare-package</phase>
@@ -123,5 +117,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

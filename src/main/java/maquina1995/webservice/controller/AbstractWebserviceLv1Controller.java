@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import maquina1995.webservice.dominio.Persistible;
 import maquina1995.webservice.dto.PersistibleDto;
 import maquina1995.webservice.service.AbstractGenericService;
 
@@ -20,14 +20,13 @@ import maquina1995.webservice.service.AbstractGenericService;
  * 
  * @author MaQuiNa1995
  *
- * @param <E> entity
  * @param <K> clave primaria de la entity
  * @param <D> dto
  */
-public abstract class AbstractWebserviceLv1Controller<E extends Persistible<K>,
-        K extends Serializable,
+public abstract class AbstractWebserviceLv1Controller<K extends Serializable,
         D extends PersistibleDto<K>> {
 
+	@Autowired
 	protected AbstractGenericService<K, D> service;
 
 	@PostMapping(path = "/create")
