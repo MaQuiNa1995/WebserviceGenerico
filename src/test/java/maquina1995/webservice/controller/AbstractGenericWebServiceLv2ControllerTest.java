@@ -59,8 +59,8 @@ abstract class AbstractGenericWebServiceLv2ControllerTest<E extends Persistible<
 		HttpEntity<D> httpEntity = new HttpEntity<>(dto);
 
 		// when
-		ResponseEntity<D> responseEntity = testRestTemplate.exchange(this.getPathOfParametizedController()
-		        .toString(), HttpMethod.POST, httpEntity, this.crearDtoParametyzedTypeReference());
+		ResponseEntity<D> responseEntity = testRestTemplate.exchange(this.getPathOfParametizedController(),
+		        HttpMethod.POST, httpEntity, this.crearDtoParametyzedTypeReference());
 
 		// then
 		D body = responseEntity.getBody();
@@ -75,8 +75,7 @@ abstract class AbstractGenericWebServiceLv2ControllerTest<E extends Persistible<
 	void findTest() {
 		// when
 		ResponseEntity<ArrayList<D>> responseEntity = testRestTemplate
-		        .getForEntity(this.getPathOfParametizedController()
-		                .toString(), this.obtenerClassListDtoGenerico(), 1L);
+		        .getForEntity(this.getPathOfParametizedController(), this.obtenerClassListDtoGenerico(), 1L);
 
 		// then
 		Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK.value(), responseEntity.getStatusCodeValue()),
