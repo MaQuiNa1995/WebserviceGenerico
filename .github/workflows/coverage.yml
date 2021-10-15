@@ -1,4 +1,4 @@
-name: Maven CI/CD
+name: Test Build and Codacy Coverage 
 
 on:
   push:
@@ -30,4 +30,4 @@ jobs:
       # API account token to retrieve your remote Codacy configuration for the project being analyzed
         api-token: ${{ secrets.CODACY_TOKEN }}
       # Optional comma separated list of coverage reports to send to Codacy
-        coverage-reports: ./target/site/jacoco/jacoco.xml
+        coverage-reports: ./target/jacoco.xml
